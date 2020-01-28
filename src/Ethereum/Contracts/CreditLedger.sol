@@ -20,6 +20,7 @@ contract CreditLedger {
     struct InquiryEntry {
         address InquirerAddress;
         uint256 InquiryDate;
+        uint LedgerEntryId;
     }
 
     constructor() public {
@@ -41,5 +42,23 @@ contract CreditLedger {
 
         _ledgerEntries[entry.Id] = entry;
         _ledgerEntryCount++;
+    }
+    
+    function readEntry(uint entryId) public returns (uint storage, address storage, string storage, uint256 storage) {
+        
+        LedgerEntry memory ledgerEntry = _ledgerEntries[entryId];
+        
+        if (ledgerEntry.Id != 0) {
+        
+            InquiryEntry memory inquiry = InquiryEntry({
+                InquirerAddress : msg.sender,
+                InquiryDate : block.timestamp,
+                LedgerEntryId : entryId
+            });
+        
+            InquiryEntries.push(inquiry);
+        }
+        
+        return (ledgerEntry.Id, ledgerEntry.CreatorAddress, ledgerEntry.StorageUri, ledgerEntry.HashCode, ledgerEntry.CreatedDate);
     }
 }
