@@ -1,4 +1,4 @@
-pragma solidity ^0.6.1;
+pragma solidity ^0.5.16;
 
 contract CreditLedger {
 
@@ -22,15 +22,28 @@ contract CreditLedger {
         uint256 InquiryDate;
         uint LedgerEntryId;
     }
+    
+    // Owner of Ledger can't write own entries
+    modifier cantWriteOwnEntry {
+        
+        require(msg.sender != LedgerOwner, 'The owner of the ledger cannot set its own reputation.');
+        
+        _;
+    }
+
+    function stringNotNullNorEmpty(string memory value) private pure returns (bool) {
+        bytes memory tempEmptyStringTest = bytes(value); // Uses memory
+        return (tempEmptyStringTest.length > 0);
+    }
 
     constructor() public {
         LedgerOwner = msg.sender;
     }
 
-    function writeEntry(string memory storageUri, string memory hashCode) public {
+    function writeEntry(string memory storageUri, string memory hashCode) public cantWriteOwnEntry {
 
-        // Validation. Parameters can't be empty
-        // Owner of Ledger can't write own entries
+        require(stringNotNullNorEmpty(storageUri), 'A storage URI must be provided.');
+        require(stringNotNullNorEmpty(hashCode), 'The document''s hash must be provided.');
 
         LedgerEntry memory entry = LedgerEntry({
             Id : _ledgerEntryCount + 1,
@@ -44,7 +57,7 @@ contract CreditLedger {
         _ledgerEntryCount++;
     }
     
-    function readEntry(uint entryId) public returns (uint storage, address storage, string storage, uint256 storage) {
+    function readEntry(uint entryId) public returns (uint, address, string memory, string memory, uint256) {
         
         LedgerEntry memory ledgerEntry = _ledgerEntries[entryId];
         
@@ -60,5 +73,10 @@ contract CreditLedger {
         }
         
         return (ledgerEntry.Id, ledgerEntry.CreatorAddress, ledgerEntry.StorageUri, ledgerEntry.HashCode, ledgerEntry.CreatedDate);
+    }
+    
+    function getLedgerEntryCount() public view returns (uint) {
+        
+        return _ledgerEntryCount;
     }
 }
