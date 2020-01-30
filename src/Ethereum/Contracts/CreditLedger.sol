@@ -36,14 +36,14 @@ contract CreditLedger {
         return (tempEmptyStringTest.length > 0);
     }
 
-    constructor() public {
-        LedgerOwner = msg.sender;
+    constructor(address ledgerOwner) public {
+        LedgerOwner = ledgerOwner;
     }
 
     function writeEntry(string memory storageUri, string memory hashCode) public cantWriteOwnEntry {
 
         require(stringNotNullNorEmpty(storageUri), 'A storage URI must be provided.');
-        require(stringNotNullNorEmpty(hashCode), 'The document''s hash must be provided.');
+        require(stringNotNullNorEmpty(hashCode), 'The document hash code must be provided.');
 
         LedgerEntry memory entry = LedgerEntry({
             Id : _ledgerEntryCount + 1,
