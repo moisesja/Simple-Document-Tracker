@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/src/Ethereum/node_modules
+/src/Ethereum/yarn.lock
+/src/Nethereum-Integration/obj
+/src/web-client/yarn.lock
