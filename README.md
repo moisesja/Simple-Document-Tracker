@@ -1,2 +1,2 @@
-# Decentralized Reputation
-Playing around with Ethereum Solidity
+# Demonstration of Ethereum and Decentralized Document Storage
+Ent0 Day
