@@ -6,4 +6,11 @@
     <RootNamespace>Nethereum_Integration</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Nethereum.Web3" Version="3.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="contracts\" />
+  </ItemGroup>
 </Project>

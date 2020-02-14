@@ -70,7 +70,11 @@ const viewer = (props) => {
 
         const node = await Ipfs.object.get(documentHashCode)
         
-        setdocumentText(nnode.Data.toString());
+        handleClose();
+        
+        setdocumentText(node.Data.toString());
+
+
     }
 
     return (

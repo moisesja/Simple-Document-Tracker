@@ -6,6 +6,8 @@
 /src/Ethereum/node_modules
 /src/Ethereum/yarn.lock
 /src/Nethereum-Integration/obj
+/src/Nethereum-Integration/bin
 /src/Nethereum-Integration/xs
 /src/Nethereum-Integration/.vs
 /src/web-client/yarn.lock
+.DS_Store
