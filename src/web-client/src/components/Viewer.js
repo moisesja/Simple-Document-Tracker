@@ -9,6 +9,8 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import Ipfs from '../utils/Ipfs';
 import web3 from '../utils/Web3';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -21,6 +23,10 @@ const useStyles = makeStyles(theme => ({
     title: {
         flexGrow: 1,
     },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
 }));
 
 const viewer = (props) => {
@@ -28,6 +34,16 @@ const viewer = (props) => {
     const classes = useStyles();
 
     const [documentText, setdocumentText] = React.useState('[empty]');
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleToggle = () => {
+        setOpen(!open);
+    };
 
     const getMetamaskAccount = async () => {
 
@@ -37,6 +53,8 @@ const viewer = (props) => {
     }
 
     const onViewDocument = async () => {
+
+        handleToggle();
 
         const inquiryingAccount = await getMetamaskAccount();
 
@@ -48,26 +66,22 @@ const viewer = (props) => {
         // Parse receipt
         const documentHashCode = trxReceipt.logs[0].args.documentHashCode;
 
-        // Get document from IPFS
+        console.log('got hash code from Ethereum', documentHashCode);
 
-        /*
+        // Get document from IPFS
+        const result = await Ipfs.object.get(documentHashCode)
+
+        console.log('result from ipfs', result.data);
+
         const inquiriesCount = await documentTracker.getInquiriesCount();
 
-        assert.equal(inquiriesCount, 1, 'There should be one inquiries.');
-
-        const inquiryEntry = await documentTracker.InquiryEntries(0);
-
-        console.log('Only inquiry', new Date(inquiryEntry.InquiryDate * 1000), inquiryEntry.InquirerAddress);
-        */
-       
-        // Get hash
-
-        // Get document from IPFS
-
         // Render it
-        setdocumentText('some text');
+        setdocumentText(result.data);
+
+        handleClose();
 
         // Raise event with number of views
+        onViewIssued(inquiriesCount)
     }
 
     return (
@@ -104,6 +118,9 @@ const viewer = (props) => {
                     </Box>
                 </div>
             }
+            <Backdrop className={classes.backdrop} open={open} onClick={handleClose}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </Box>
     );
 }
