@@ -27,7 +27,6 @@ class App extends Component {
 
   render () {
 
-    console.log('rendering');
     return <Layout onContractCreated={this.onContractCreated} documentTracker={this.state.documentTracker} />
 
   }

@@ -68,20 +68,9 @@ const viewer = (props) => {
 
         console.log('got hash code from Ethereum', documentHashCode);
 
-        // Get document from IPFS
-        const result = await Ipfs.object.get(documentHashCode)
-
-        console.log('result from ipfs', result.data);
-
-        const inquiriesCount = await documentTracker.getInquiriesCount();
-
-        // Render it
-        setdocumentText(result.data);
-
-        handleClose();
-
-        // Raise event with number of views
-        onViewIssued(inquiriesCount)
+        const node = await Ipfs.object.get(documentHashCode)
+        
+        setdocumentText(nnode.Data.toString());
     }
 
     return (
@@ -126,7 +115,7 @@ const viewer = (props) => {
 }
 
 viewer.propTypes = {
-    documentTracker: PropTypes.object.isRequired,
+    documentTracker: PropTypes.object,
     onViewIssued: PropTypes.func
 };
 

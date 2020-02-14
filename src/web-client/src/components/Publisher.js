@@ -61,23 +61,19 @@ const publisher = (props) => {
 
             handleToggle();
 
-            // Wrap data
-            const obj = {
-                Data: new Buffer(documentText)
-            }
-
-            // Write to IPFS
-            const cid = await Ipfs.object.put(obj)
-
-            // Capture the location, and hash
-            // IPFS names the document the same as its hash
-            const documentHashCode = cid.toString();
-
             // Get Current User
             const currentUser = await getMetamaskAccount();
 
+            const obj = {
+                Data: new Buffer(documentText),
+                Links: []
+            }
+              
+            const cid = await Ipfs.object.put(obj)
+            const documentHash = cid.toString();
+
             // Deploy contract and pass-in the hashcode. The deploying account is inferred to be the first one in the accounts list
-            const documentTracker = await ContractDef.new(documentHashCode, {
+            const documentTracker = await ContractDef.new(documentHash, {
                 from: currentUser
             });
 
