@@ -6,37 +6,43 @@ namespace Nethereum_Integration
 {
     class Program
     {
-        static async Task GetAccountBalance()
+        static async Task ViewInquiriesAsync(string contractAddress)
         {
+            // Get ABI
+            var parser = new ContractParser("contracts/DocumentTracker.json");
+            var abi = parser.Abi;
+
             var web3 = new Web3("https://rinkeby.infura.io/v3/025dd953be614e1daf927b33228ab54c");
-            var balance = await web3.Eth.GetBalance.SendRequestAsync("0x58453fd305a4ad23EF0F6b596f140AdD705CCe80");
-            Console.WriteLine($"Balance in Wei: {balance.Value}");
+            var contract = web3.Eth.GetContract(abi, contractAddress);
 
-            var etherAmount = Web3.Convert.FromWei(balance.Value);
-            Console.WriteLine($"Balance in Ether: {etherAmount}");
+            // First get the number of inquiries
+            var getInquiriesCountFunc = contract.GetFunction("getInquiriesCount");
+
+            var inquiriesCount = await getInquiriesCountFunc.CallAsync<int>();
+
+            var inquiryEntriesFunc = contract.GetFunction("InquiryEntries");
+
+            Console.WriteLine($"Number of Inquiries: {inquiriesCount}");
+
+            for (var index = 0; index < inquiriesCount; index++)
+            {
+                var inquiry = await inquiryEntriesFunc
+                    .CallDeserializingToObjectAsync<InquiryEntry>(index);
+
+                Console.WriteLine($"Inquiry Date: {inquiry.InquiryDate} Inquirer Address: {inquiry.InquiryAddress}");
+            }
         }
-
 
         public static void Main(string[] args)
         {
-            GetAccountBalance().Wait();
-            Console.ReadLine();
+            if (args.Length == 0)
+            {
+                throw new ArgumentException("Provide Contract Address");
+            }
+
+            var contractAddress = args[0];
+            ViewInquiriesAsync(contractAddress).Wait();
         }
-
-            
-
-
-            // Setup wallet
-
-            // Get account
-
-            // Load contract
-
-            // Invoke method
-
-            // Output Inquiries
-
-
-        }
+    }
     
 }

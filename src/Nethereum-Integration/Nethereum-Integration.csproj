@@ -8,9 +8,15 @@
 
   <ItemGroup>
     <PackageReference Include="Nethereum.Web3" Version="3.7.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="contracts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="contracts\DocumentTracker.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

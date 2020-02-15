@@ -3,11 +3,11 @@ using Newtonsoft.Json.Linq;
 
 namespace Nethereum_Integration
 {
-    public class ContractMeta
+    public class ContractParser
     {
         private readonly JObject _jObject;
 
-        public ContractMeta(string path)
+        public ContractParser(string path)
         {
             _jObject = JObject.Parse(File.ReadAllText(path));
         }
