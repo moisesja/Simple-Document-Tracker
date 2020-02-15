@@ -18,8 +18,6 @@
  *
  */
 
-const HDWalletProvider = require('@truffle/hdwallet-provider');
-const mnemonic = 'capital position corn surface snake danger magnet column warrior peace reduce pig';
 
 const path = require('path');
 
