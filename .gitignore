@@ -11,3 +11,4 @@
 /src/Nethereum-Integration/.vs
 /src/web-client/yarn.lock
 .DS_Store
+src/.vscode
