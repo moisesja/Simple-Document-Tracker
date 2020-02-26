@@ -12,7 +12,7 @@
     "ipfs-http-client": "^42.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "3.3.1",    
+    "react-scripts": "^3.4.0",    
     "web3": "^1.2.6"
   },  
   "scripts": {
