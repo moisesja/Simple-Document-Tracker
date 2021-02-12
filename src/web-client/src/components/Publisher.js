@@ -65,7 +65,7 @@ const publisher = (props) => {
             const currentUser = await getMetamaskAccount();
 
             const obj = {
-                Data: new Buffer(documentText),
+                Data: Buffer.from(documentText),
                 Links: []
             }
               
